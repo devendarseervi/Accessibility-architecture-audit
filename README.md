@@ -1,4 +1,4 @@
-# Internship Task 02 — Accessibility Audit & Project Foundation
+#  Accessibility Audit & Project Foundation
 
 ## Overview
 

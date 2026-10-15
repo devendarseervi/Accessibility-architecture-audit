@@ -12,6 +12,13 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+// Start the server only when this file is run directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+}
+
+// Export the Express app for automated tests
+module.exports = app;
+

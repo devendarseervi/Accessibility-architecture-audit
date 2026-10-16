@@ -2,57 +2,68 @@
 
 ## 1. Overview
 
-This repository provides a foundation for a full-stack web application and contains the accessibility audit of the National Portal of India Services website.
+This repository contains a full-stack application foundation and an accessibility audit of the National Portal of India Services website.
 
-The project separates the frontend, backend, documentation, and tests to keep responsibilities clear and maintenance manageable.
+The application uses React and Vite for the frontend and Node.js with Express for the backend. The repository separates application code, documentation, and tests to keep responsibilities clear and maintenance manageable.
+
+The original target URL, `https://services.india.gov.in/`, was unavailable for the audit. The replacement National Portal of India Services page, `https://www.india.gov.in/services`, is the current audit target.
 
 ## 2. Repository Structure
 
 ```text
 internship_project/
-├── client/     # Frontend application and user interface
-├── server/     # Backend API and application logic
-├── docs/       # Accessibility audit and project documentation
+├── client/                  # React and Vite frontend
+│   └── src/                 # UI and frontend tests
+├── server/                  # Express backend and API tests
+├── docs/                    # Audit report and documentation
 │   ├── accessibility-audit.csv
 │   ├── architecture.md
 │   └── evidence/
-├── tests/      # Automated tests
+├── tests/                   # Root-level test resources, if applicable
 ├── .gitignore
 └── README.md
 ```
 
-## 3. Component Responsibilities
+## 3. Technology Stack
+
+- **Frontend:** React, Vite, JavaScript, and CSS
+- **Backend:** Node.js and Express
+- **API communication:** HTTP requests
+- **Testing:** Vitest and React Testing Library on the frontend; Node.js test runner and Supertest on the backend
+- **Version control:** Git and GitHub
+
+## 4. Component Responsibilities
 
 ### Client
 
-The client contains the user interface. It will communicate with the backend through HTTP API requests when application features are implemented.
+The client contains the React user interface. The current dashboard displays accessibility audit findings and allows users to expand finding details. It also requests the backend health endpoint to display the backend's status.
 
 ### Server
 
-The server will handle API requests and application logic. It will expose endpoints for the client as the application develops.
+The server uses Express to expose API endpoints. The current `GET /api/health` endpoint returns a JSON response indicating that the backend is running.
 
 ### Docs
 
-This directory contains the accessibility audit report, supporting screenshots, and architecture documentation.
+The `docs/` directory contains the accessibility audit CSV, architecture documentation, and supporting evidence.
 
 ### Tests
 
-This directory will contain automated tests to verify application behavior.
+Frontend tests verify dashboard rendering, backend-status handling, and the display of finding details. Backend tests verify the health endpoint response.
 
-## 4. Boundaries and Data Flow
+## 5. Boundaries and Data Flow
 
-The client is responsible for presentation and user interaction. The server is responsible for backend logic and API responses. The client should access backend functionality through defined API endpoints rather than directly accessing server internals.
+The client is responsible for presentation and user interaction. The server handles API requests and returns responses. The client communicates with the backend through HTTP endpoints instead of accessing server internals directly.
 
-Expected request flow:
+Current request flow:
 
-1. A user interacts with the client.
-2. The client sends an HTTP request to the server.
-3. The server processes the request and returns a response.
-4. The client displays the result.
+1. A user opens the frontend dashboard.
+2. The client requests `GET /api/health`.
+3. The Express server returns a JSON response.
+4. The client displays the backend connection status.
 
-This describes the planned architecture; the application and API have not yet been implemented.
+Accessibility findings are currently defined in the frontend and documented separately in `docs/accessibility-audit.csv`. They are not yet loaded dynamically from the backend.
 
-## 5. Local Setup
+## 6. Local Setup
 
 ### Prerequisites
 
@@ -60,24 +71,73 @@ This describes the planned architecture; the application and API have not yet be
 - Node.js LTS
 - npm
 
-The frontend and backend setup commands will be documented after their respective project configurations are added.
+### Start the backend
 
-## 6. First Vertical Feature Slice
+Open a terminal:
 
-The first vertical feature slice will connect one small frontend interaction to one backend API endpoint.
+```powershell
+cd server
+npm install
+npm start
+```
 
-The slice will include:
+The backend runs at `http://localhost:5000`.
 
-1. A simple user interface in the client.
-2. One API endpoint in the server.
-3. A request from the client to the endpoint.
-4. A visible result in the interface.
-5. A test verifying the endpoint or feature.
+Health endpoint: `http://localhost:5000/api/health`
 
-The exact feature will be selected before implementation.
+### Start the frontend
 
-## 7. Current Status
+Open a second terminal:
 
-The repository structure, Git initialization, `.gitignore`, README, accessibility audit CSV, and evidence directory have been created.
+```powershell
+cd client
+npm install
+npm run dev
+```
 
-The frontend, backend, API, and automated tests remain to be configured and implemented.
+Vite displays the local frontend URL in the terminal, usually `http://localhost:5173`.
+
+### Run tests and checks
+
+Run backend tests from the `server/` directory:
+
+```powershell
+npm test
+```
+
+Run frontend tests from the `client/` directory:
+
+```powershell
+npm test -- --run --reporter=verbose --maxWorkers=1
+```
+
+Run frontend linting and build checks from the `client/` directory:
+
+```powershell
+npm run lint
+npm run build
+```
+
+## 7. First Vertical Feature Slice
+
+The first vertical feature slice connects the frontend dashboard to the backend health endpoint.
+
+It includes:
+
+1. A React dashboard.
+2. An Express health endpoint.
+3. An HTTP request from the client to the server.
+4. A visible backend status in the interface.
+5. Automated tests for the endpoint and dashboard behavior.
+
+## 8. Current Status
+
+- Frontend dashboard implemented.
+- Backend health endpoint implemented.
+- Client-server communication implemented for backend health status.
+- Frontend and backend tests implemented.
+- Frontend lint and production build checks pass.
+- Accessibility findings documented in `docs/accessibility-audit.csv`.
+- Manual verification of the recorded accessibility findings remains necessary where noted in the audit.
+
+The audit records Lighthouse findings; they should not be treated as fully verified WCAG violations until the relevant DOM, keyboard behavior, contrast ratios, and target dimensions have been checked.
